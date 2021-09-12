@@ -26,4 +26,4 @@ class Solution:
         return res
     
     # O(N) time
-    # O(N) space
+    # O(D) space for diameter
