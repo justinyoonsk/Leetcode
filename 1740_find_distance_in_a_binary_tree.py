@@ -1,31 +1,35 @@
 # Definition for a binary tree node.
 # class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        self.answer = None
-        def dfs(node):
+    def findDistance(self, root: Optional[TreeNode], p: int, q: int) -> int:
+        if p == q:
+            return 0 
+        def dfs(node, depth):
             if node is None:
                 return 
             
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left = dfs(node.left, depth + 1)
+            right = dfs(node.right, depth + 1)
             
             if left and right:
-                self.answer = node
-            if (node == p or node == q) and (left or right):
-                self.answer = node
-            if node == p or node == q:
-                return True
-            if left or right:
-                return True 
+                return left - depth + right - depth
+            
+            if (node.val == p or node.val == q) and (left or right):
+                if left:
+                    return left - depth 
+                elif right:
+                    return right - depth 
+                
+            if node.val == p or node.val == q:
+                return depth 
+            
+            return left or right
         
-        dfs(root)
-        return self.answer
+        return dfs(root, 0)
     
     # O(N) time
-    # O(h) space
+    # O(h) space 
